@@ -1,0 +1,79 @@
+# No Fuss Flame example configuration file for the Eurace@UniBi model
+
+model_path: /home/eurace_unibi/
+model_xml: /home/eurace_unibi/eurace_model.xml
+xparser_path: /home/xparser-0.17.1-clean/
+base_xml: /home/eurace_unibi/its/0.xml
+workspace: /home/example
+
+iterations: 3000
+transient: 0
+output_frequency: 20
+agent_histogram_frequency: 500
+runs: 4
+run_aggregation: [MEAN, MEDIAN, SINGLE]
+
+burn_in_its: 600
+
+experiments:
+    gamma12:
+        gamma_const: 12.0
+    gamma15:
+        gamma_const: 16.0
+    gamma18:
+        gamma_const: 20.0
+
+time_series:
+    Eurostat:
+        - monthly_output
+        - unemployment_rate
+        - cpi
+        - gdp
+        - mean_net_income
+
+    Bank:
+        - active
+        - deposits
+        - equity
+
+    CentralBank:
+        - ecb_deposits
+
+    Firm:
+        - active
+        - mean_wage
+
+single_agent_time_series:
+    Bank:
+        - equity
+        - deposits
+
+    Firm:
+        - mean_wage
+
+agent_histogram:
+    Bank:
+        - deposits
+        - equity
+
+    Firm:
+        - mean_wage
+
+overtime_histogram:
+    Eurostat:
+        - unemployment_rate
+
+capture_data_only:
+    Household:
+        - payment_account
+
+correlation_table:
+    table1:
+        - [{Eurostat: monthly_output}, {Eurostat: unemployment_rate}]
+        - [{Eurostat: monthly_output}, {Eurostat: cpi}]
+        - [{Eurostat: monthly_output}, {Eurostat: gdp}]
+        - [{Eurostat: monthly_output}, {Firm: mean_wage}]
+        - [{Eurostat: monthly_output}, {Bank: deposits}]
+
+
+        
