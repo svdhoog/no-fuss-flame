@@ -19,7 +19,7 @@ from pathlib import Path
 class FlameSession:
 
     def __init__(self, config_file):
-        config = yaml.load(open(config_file))
+        config = yaml.load(open(config_file), Loader=yaml.FullLoader)
 
         self.model_xml = config["model_xml"]
         self.model_path = config["model_path"]
