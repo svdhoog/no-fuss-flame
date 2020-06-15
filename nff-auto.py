@@ -59,7 +59,7 @@ if __name__ == "__main__":
                 auto.generate_single_run_correlation_tables(session, csv=csv, txt=txt)
                 auto.generate_mean_correlation_tables(session, csv=csv, txt=txt)
 
-            if len(session.experiments) > 1:
+            if len(session.experiments) > 1 or (len(session.experiments) == 1 and args.only_combined):
                 auto.generate_single_run_time_series_plots_combined(session, csv=csv, plot=plot)
                 auto.generate_single_agent_time_series_plots_combined(session, csv=csv, plot=plot)
                 auto.generate_agent_histograms_single_runs_combined(session, csv=csv, plot=plot)
@@ -73,7 +73,7 @@ if __name__ == "__main__":
             auto.generate_all_runs_time_series_plots(session, csv=csv, plot=plot)
             auto.generate_correlation_barcharts(session)
 
-        if len(session.experiments) > 1:
+        if len(session.experiments) > 1 or (len(session.experiments) == 1 and args.only_combined):
             auto.generate_all_runs_time_series_plots_combined(session, csv=csv, plot=plot)
             auto.generate_aggregated_time_series_plots_combined(session, csv=csv, plot=plot)
             auto.generate_agent_histograms_aggregated_combined(session, csv=csv, plot=plot)
