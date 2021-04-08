@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-import numpy
+import numpy as np
 
 def timeseries_plot(data, legends, title, linewidth=0.5, save_as_file=None, show=False):
     plt.clf()
@@ -21,12 +21,12 @@ def timeseries_plot(data, legends, title, linewidth=0.5, save_as_file=None, show
 
 def histogram_plot(data, legends, title, plot_mean=True, bins=80, save_as_file=None, show=False):
     plt.clf()
-    bins = numpy.linspace(numpy.amin(data), numpy.amax(data), bins)
+    bins = np.linspace(np.amin(data), np.amax(data), bins)
     cmap = plt.get_cmap("tab10")
     for i in range(0, len(data)):
         plt.hist(data[i], bins, color=cmap(i), edgecolor='k', alpha=0.5, label=legends[i])
         if plot_mean:
-            plt.axvline(numpy.mean(data[i]), color=cmap(i), linestyle='dashed', linewidth=2)
+            plt.axvline(np.mean(data[i]), color=cmap(i), linestyle='dashed', linewidth=2)
     plt.title(title)
     plt.legend()
     if save_as_file is not None:
@@ -41,7 +41,7 @@ def barchart_plot(data, legends, title, errors=None, save_as_file=None, show=Fal
 
     no_sets = len(data)
     width = 0.8/no_sets
-    ind = numpy.arange(len(data[0]))
+    ind = np.arange(len(data[0]))
 
     fig, ax = plt.subplots()
 
@@ -63,6 +63,3 @@ def barchart_plot(data, legends, title, errors=None, save_as_file=None, show=Fal
         plt.show()
 
     plt.close(fig)
-
-
-
