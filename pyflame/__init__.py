@@ -57,7 +57,7 @@ class FlameSession:
         if "capture_data_only" in config:
             self.capture_data_only = config["capture_data_only"]
         else:
-            self.time_series = {}
+            self.capture_data_only = {}
 
         if "time_series" in config:
             self.time_series = config["time_series"]
