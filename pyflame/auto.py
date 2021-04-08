@@ -528,12 +528,3 @@ def generate_correlation_barcharts_combined(nff_session):
             except:
                 print("  ERROR:", corr, corr_pair)
     print(" DONE")
-
-
-
-
-
-
-
-
-

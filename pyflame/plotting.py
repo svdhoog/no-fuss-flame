@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def timeseries_plot(data, legends, title, linewidth=0.5, save_as_file=None, show=False):
+    print("Entered: timeseries_plot()")
+    
     plt.clf()
     cmap = plt.get_cmap("tab10")
     for i in range(0, len(data)):

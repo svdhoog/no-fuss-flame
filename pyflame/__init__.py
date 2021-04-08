@@ -6,6 +6,7 @@ import sys
 from pyflame import datacollection
 import numpy as np
 from pyflame import plotting
+from pyflame import plotting_sns
 from multiprocessing import Pool
 import time
 from pyflame import tables
@@ -14,7 +15,7 @@ from pyflame import utils
 import yaml
 import pickle
 from pathlib import Path
-
+import pandas as pd
 
 class FlameSession:
 
@@ -301,23 +302,70 @@ class FlameSession:
         print(" DONE")
 
     def generate_time_series_plot(self, agent, var, experiments, run_ids, agents_aggregated=True, save_as_csv=False, save_as_png=False, show_plot=False, linewidth=1):
+        
+        plot_style = 'default'
+        #plot_style = 'sns'
+        
+        #print("Trying: set DataFrame")
+        #indices: [e][id][agent][var]
+        #shapes: [experiments][run_ids][agent][var]
+        print("experiments: " + str(experiments) + ", dtype: " + str(type(experiments)) + ", dtype elements: " + str(type(experiments[0])) + ", len: " + str(len(experiments)))
+        print("run_ids: " + str(run_ids) + ", dtype: " + str(type(run_ids)) + ", dtype elements: " + str(type(run_ids[0])) + ", len: " + str(len(run_ids)))
+        df = pd.DataFrame(data=np.zeros((len(experiments),len(run_ids))), columns = experiments, index = [run_ids, agent, var])
+        print("df.shape:")
+        print(df.shape) 
+        print("df.index:")
+        print(df.index) 
+        
         data_full = []
         labels = []
         for e in experiments:
+            #print("start: experiment " + e)
             data = []
             labels.append(e)
             for id in run_ids:
+                print("Run: " + str(id))                
                 if agents_aggregated:
+                    print("\t\tagents_aggregated")
+                    #print(self.aggregated_data)
+                    print(self.aggregated_data[e][id][agent][var])
                     data.append(self.aggregated_data[e][id][agent][var])
+                    #df.loc[e,id,agent,var] = self.aggregated_data[e][id][agent][var]
                 else:
+                    print("\t\t!agents_aggregated")
+                    #print(self.disaggregated_data)
                     transposed = np.transpose(self.disaggregated_data[e][id][agent][var])
                     for ts in transposed:
                         data.append(ts)
+                        #df.loc[e,id,agent,var] = ts
+                        
             data_full.append(data)
+            print("\t data_fill after step: experiment " + e)
+            print(data_full)
+            
+        print("After experiments loop:")
+        print(data_full)
+            
+        #test
+        #print("data_full.len():") 
+        #print(len(data_full), flush=True)
+        #print(dir(data_full)) 
+        #print(data_full)
 
+        #print("Trying: set DataFrame")    
+        #print(df)
+        #print("df.shape:")
+        #print(df.shape) 
+        
+        
         if show_plot or save_as_png:
-            plotting.timeseries_plot(data_full, labels, agent + ": " + var, linewidth, save_as_png, show_plot)
-
+            if plot_style == 'default':
+                plotting.timeseries_plot(data_full, labels, agent + ": " + var, linewidth, save_as_png, show_plot)
+            elif plot_style == 'sns':
+                plotting_sns.timeseries_plot(data_full, labels, agent + ": " + var, linewidth, save_as_png, show_plot)
+            else:
+                raise Exception("Timeseries plot failed")
+                
         if save_as_csv:
             tables.write_dataseries_csv(data_full, labels, save_as_csv)
 
